@@ -1,0 +1,22 @@
+{
+    "name": "vw/tools",
+    "type": "library",
+    "authors": [{
+		"name": "Daniel Gomes",
+		"role": "Developer"
+ 	}],
+    "licence": "proprietary",
+    "autoload": {
+        "classmap": [
+        	"lib/"
+        ]
+    },
+    "require": {
+        "firephp/firephp-core": "@stable",
+        "swiftmailer/swiftmailer": "5.4.8",
+        "mrclay/minify": "@stable"
+    },
+    "license": [
+       "GPL-3.0-or-later"
+    ]
+}
