@@ -13,24 +13,62 @@ class images
      *
      * @param  string   $imagePath  Chemin de l'image à sauvegarder
      * @param  string   $saveToDir  Répertoire de destination
-     * @param  string   $imageName  Nouveau nom de l'image
+     * @param  string   $imageName  Nouveau nom de l'image (sans l'extension)
      */
-    public static function saveImage($imagePath, $saveToDir, $imageName)
+    public static function saveImage($imagePath, $saveToDir, $imageName = null, $getExtension = false)
     {
-        $ch = curl_init($imagePath);
+        if (is_null($imageName)) {
+            $expPath = explode('/', $imagePath);
+            $imageName = end($expPath);
+        }
 
-        // Ajout d'un slash au path s'il est manquant
         if ($saveToDir[strlen($saveToDir)-1] != '/') {
             $saveToDir .= '/';
         }
-        $fp = fopen($saveToDir . $imageName, 'wb');
 
-        curl_setopt($ch, CURLOPT_FILE, $fp);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_exec($ch);
-        curl_close($ch);
+        $ch = curl_init($imagePath);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-        fclose($fp);
+        if (!curl_errno($ch))
+        {
+            // Ajout d'un slash au path s'il est manquant
+            if ($saveToDir[strlen($saveToDir)-1] != '/') {
+                $saveToDir .= '/';
+            }
+            $fp = fopen($saveToDir . $imageName, 'wb');
+
+            curl_setopt($ch, CURLOPT_FILE, $fp);
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_exec($ch);
+            curl_close($ch);
+
+            fclose($fp);
+        }
+
+        preg_match("'^(.*)\.(gif|jpe?g|png)$'i", $imageName, $ext);
+
+        if ($getExtension) {
+
+            if (!isset($ext[2])) {
+
+                $imgType = exif_imagetype($saveToDir . $imageName);
+
+                switch ($imgType) {
+                    case 1 :    $extension = 'gif';     break;
+                    case 2 :    $extension = 'jpg';     break;
+                    case 3 :    $extension = 'png';     break;
+                    case 4 :    $extension = 'bmp';     break;
+                    default :   $extension = 'jpg';
+                }
+
+                $nameFile = $saveToDir . $imageName . '.' . $extension;
+                rename($saveToDir . $imageName, $nameFile);
+
+                return $nameFile;
+            }
+        }
+
+        return $imageName . $ext[2];
     }
 
 
@@ -39,13 +77,13 @@ class images
      *
      * @param  string   $imagePath      Chemin de l'image à redimensionner
      * @param  string   $saveToDir      Répertoire de destination
-     * @param  string   $imageName      Nouveau nom de l'image
+     * @param  string   $imageName      Nouveau nom de l'image (sans l'extension)
      * @param  integer  $max_x          Nouvelle largeur
      * @param  integer  $max_y          Nouvelle hauteur
      */
-    public static function saveThumbnail($imagePath, $saveToDir, $imageName, $max_x, $max_y)
+    public static function resizeImg($imagePath, $saveToDir, $imageName, $max_x, $max_y)
     {
-        preg_match("'^(.*)\.(gif|jpe?g|png)$'i", $imageName, $ext);
+        preg_match("'^(.*)\.(gif|jpe?g|png)$'i", $imagePath, $ext);
         $extension = strtolower($ext[2]);
         if ($extension == 'jpeg') {
             $extension = 'jpg';
@@ -80,7 +118,7 @@ class images
             if ($saveToDir[strlen($saveToDir)-1] != '/') {
                 $saveToDir .= '/';
             }
-            $newImagePath = $saveToDir . $ext[1] . '.' . $extension;
+            $newImagePath = $saveToDir . $imageName . '.' . $extension;
 
             switch($extension)
             {
