@@ -7,7 +7,7 @@ namespace tools;
  *
  * @author Daniel Gomes
  */
-class Curl
+class curl
 {
     /* generate body content from different data type encodings (JSON, form encoding, etc.) */
     private static function encode(?array $postFields, bool $json, bool $formEncoded)
