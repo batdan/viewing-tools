@@ -29,7 +29,7 @@ class images
 
             self::curlSaveImage($imagePath, $saveToDir, $imageName);
 
-            preg_match("'^(.*)\.(gif|jpe?g|png)$'i", $imageName, $ext);
+            preg_match("'^(.*)\.(gif|jpe?g|png|webp)$'i", $imageName, $ext);
 
             if ($getExtension) {
 
