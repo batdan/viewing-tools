@@ -141,6 +141,11 @@ class images
     /**
      * Enregistrement de l'image
      * Cette fonction récupère la bonne url s'il y a une redirection 301, 302
+     *
+     * @param  string   $imagePath      Chemin de l'image à redimensionner
+     * @param  string   $saveToDir      Répertoire de destination
+     * @param  string   $imageName      Nouveau nom de l'image (sans l'extension)
+     * @param  boolean  $checkRedir     Permet de vérifier s'il y a une redirection et de récupérer vrai lien
      */
     private static function curlSaveImage($imagePath, $saveToDir, $imageName, $checkRedir=true)
     {
