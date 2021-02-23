@@ -42,7 +42,8 @@ class images
                         case 2 :    $extension = 'jpg';     break;
                         case 3 :    $extension = 'png';     break;
                         case 4 :    $extension = 'bmp';     break;
-                        default :   $extension = 'jpg';
+                        case 18 :   $extension = 'webp';    break;
+                        default :   $extension = 'unknow';
                     }
 
                     $nameFile = $saveToDir . $imageName . '.' . $extension;
@@ -76,7 +77,7 @@ class images
     public static function resizeImg($imagePath, $saveToDir, $imageName, $max_x, $max_y)
     {
         try {
-            preg_match("'^(.*)\.(gif|jpe?g|png)$'i", $imagePath, $ext);
+            preg_match("'^(.*)\.(gif|jpe?g|png|webp)$'i", $imagePath, $ext);
             $extension = strtolower($ext[2]);
             if ($extension == 'jpeg') {
                 $extension = 'jpg';
@@ -90,6 +91,8 @@ class images
                 case 'gif' : $im   = imagecreatefromgif  ($imagePath);
                              break;
                 case 'png' : $im   = imagecreatefrompng  ($imagePath);
+                             break;
+                case 'webp': $im   = imagecreatefromwebp ($imagePath);
                              break;
                 default    : $stop = true;
                              break;
@@ -118,6 +121,7 @@ class images
                     case 'jpg' : imagejpeg($save, $newImagePath);   break;
                     case 'gif' : imagegif($save, $newImagePath);    break;
                     case 'png' : imagepng($save, $newImagePath);    break;
+                    case 'webp' : imagewebp($save, $newImagePath);  break;
                 }
 
                 imagedestroy($im);
