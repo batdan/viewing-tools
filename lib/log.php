@@ -36,7 +36,7 @@ class log
             $log = print_r($log, true);
         }
 
-        $path = __DIR__ . '/../../var/log/';
+        $path = __DIR__ . '/../../../../var/log/';
 
         switch ($type)
         {
