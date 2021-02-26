@@ -31,6 +31,7 @@ return array(
     'tools\\libIncluder' => $baseDir . '/lib/libIncluder.php',
     'tools\\libIncluderList' => $baseDir . '/lib/libIncluderList.php',
     'tools\\listForm' => $baseDir . '/lib/listForm.php',
+    'tools\\log' => $baseDir . '/lib/log.php',
     'tools\\paginator' => $baseDir . '/lib/paginator.php',
     'tools\\planing' => $baseDir . '/lib/planing.php',
     'tools\\tools' => $baseDir . '/lib/tools.php',

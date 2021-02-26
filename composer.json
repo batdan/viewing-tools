@@ -14,7 +14,8 @@
     "require": {
         "firephp/firephp-core": "@stable",
         "swiftmailer/swiftmailer": "5.4.8",
-        "mrclay/minify": "@stable"
+        "mrclay/minify": "@stable",
+        "monolog/monolog": "^2.2"
     },
     "license": [
        "GPL-3.0-or-later"

@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit1ba9a7e4b1bb3d67c76600d769c20b64
+class ComposerStaticInitbc0ae93ec1be8f7d3f58474186dd40f9
 {
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
@@ -32,6 +32,7 @@ class ComposerStaticInit1ba9a7e4b1bb3d67c76600d769c20b64
         'tools\\libIncluder' => __DIR__ . '/../..' . '/lib/libIncluder.php',
         'tools\\libIncluderList' => __DIR__ . '/../..' . '/lib/libIncluderList.php',
         'tools\\listForm' => __DIR__ . '/../..' . '/lib/listForm.php',
+        'tools\\log' => __DIR__ . '/../..' . '/lib/log.php',
         'tools\\paginator' => __DIR__ . '/../..' . '/lib/paginator.php',
         'tools\\planing' => __DIR__ . '/../..' . '/lib/planing.php',
         'tools\\tools' => __DIR__ . '/../..' . '/lib/tools.php',
@@ -43,7 +44,7 @@ class ComposerStaticInit1ba9a7e4b1bb3d67c76600d769c20b64
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->classMap = ComposerStaticInit1ba9a7e4b1bb3d67c76600d769c20b64::$classMap;
+            $loader->classMap = ComposerStaticInitbc0ae93ec1be8f7d3f58474186dd40f9::$classMap;
 
         }, null, ClassLoader::class);
     }
