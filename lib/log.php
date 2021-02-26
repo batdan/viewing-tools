@@ -36,37 +36,38 @@ class log
             $log = print_r($log, true);
         }
 
-        $path = __DIR__ . '/../../../../var/log/';
+        $fileName = is_null($nameLog) ? $type : $nameLog;
+        $path = __DIR__ . '/../../../../var/log/' . $fileName . '_' . date('Y-m') . '.log';
 
         switch ($type)
         {
             case 'debug' :
-                $logger->pushHandler(new StreamHandler( $path . $type . '.log', Logger::DEBUG));
+                $logger->pushHandler(new StreamHandler( $path, Logger::DEBUG));
                 $logger->debug($log);
                 break;
 
             case 'info' :
-                $logger->pushHandler(new StreamHandler( $path . $type . '.log', Logger::INFO));
+                $logger->pushHandler(new StreamHandler( $path, Logger::INFO));
                 $logger->info($log);
                 break;
 
             case 'notice' :
-                $logger->pushHandler(new StreamHandler( $path . $type . '.log', Logger::NOTICE));
+                $logger->pushHandler(new StreamHandler( $path, Logger::NOTICE));
                 $logger->notice($log);
                 break;
 
             case 'warning' :
-                $logger->pushHandler(new StreamHandler( $path . $type . '.log', Logger::WARNING));
+                $logger->pushHandler(new StreamHandler( $path, Logger::WARNING));
                 $logger->warning($log);
                 break;
 
             case 'error' :
-                $logger->pushHandler(new StreamHandler( $path . $type . '.log', Logger::ERROR));
+                $logger->pushHandler(new StreamHandler( $path, Logger::ERROR));
                 $logger->error($log);
                 break;
 
             case 'critical' :
-                $logger->pushHandler(new StreamHandler( $path . $type . '.log', Logger::CRITICAL));
+                $logger->pushHandler(new StreamHandler( $path, Logger::CRITICAL));
                 $logger->critical($log);
                 break;
 
