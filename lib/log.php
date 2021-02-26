@@ -10,11 +10,10 @@ use Monolog\Handler\StreamHandler;
 class log
 {
     /**
-     * [log description]
-     * @param  [type] $type [description]
-     * @param  [type] $log  [description]
-     * @param  [type] $nameLog [description]
-     * @return [type]       [description]
+     * Gestion des logs avec archivage mensuel
+     * @param  string               $type           Type de log
+     * @param  string|array|object  $log            contenu du log
+     * @param  string               $nameLog        nom du fichier custom (sans path et sans extension)
      */
     public static function setLog($type, $log, $nameLog=null)
     {
@@ -36,6 +35,7 @@ class log
             $log = print_r($log, true);
         }
 
+        // Nom du fichier avec archivage mensuel
         $fileName = is_null($nameLog) ? $type : $nameLog;
         $path = __DIR__ . '/../../../../var/log/' . $fileName . '_' . date('Y-m') . '.log';
 
