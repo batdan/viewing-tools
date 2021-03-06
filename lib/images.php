@@ -6,7 +6,7 @@ namespace tools;
  *
  * @author Daniel Gomes
  */
-class images
+class images extends wgetImages
 {
     /**
      * Permet de sauvegarder une image
@@ -15,7 +15,7 @@ class images
      * @param  string   $saveToDir  Répertoire de destination
      * @param  string   $imageName  Nouveau nom de l'image (sans l'extension)
      */
-    public static function saveImage($imagePath, $saveToDir, $imageName = null, $getExtension = false)
+    public function saveImage($imagePath, $saveToDir, $imageName = null, $getExtension = false)
     {
         try {
             if (is_null($imageName)) {
@@ -27,7 +27,7 @@ class images
                 $saveToDir .= '/';
             }
 
-            self::curlSaveImage($imagePath, $saveToDir, $imageName);
+            $this->saveImg($imagePath, $saveToDir, $imageName);
 
             preg_match("'^(.*)\.(gif|jpe?g|png|webp)$'i", $imageName, $ext);
 
@@ -74,7 +74,7 @@ class images
      * @param  integer  $max_x          Nouvelle largeur
      * @param  integer  $max_y          Nouvelle hauteur
      */
-    public static function resizeImg($imagePath, $saveToDir, $imageName, $max_x, $max_y)
+    public function resizeImg($imagePath, $saveToDir, $imageName, $max_x, $max_y)
     {
         try {
             preg_match("'^(.*)\.(gif|jpe?g|png|webp)$'i", $imagePath, $ext);
@@ -147,7 +147,7 @@ class images
      * @param  string   $imageName      Nouveau nom de l'image (sans l'extension)
      * @param  boolean  $checkRedir     Permet de vérifier s'il y a une redirection et de récupérer vrai lien
      */
-    private static function curlSaveImage($imagePath, $saveToDir, $imageName, $checkRedir=true)
+    private function curlSaveImage($imagePath, $saveToDir, $imageName, $checkRedir=true)
     {
         $ch = curl_init($imagePath);
         curl_setopt($ch, CURLOPT_HEADER, 1);
@@ -165,7 +165,7 @@ class images
             if ($checkRedir) {
                 $ret = curl_getinfo($ch);
                 if ($ret['http_code'] == 301 || $ret['http_code'] == 302) {
-                    self::curlSaveImage($ret['redirect_url'], $saveToDir, $imageName, false);
+                    $this->curlSaveImage($ret['redirect_url'], $saveToDir, $imageName, false);
                 }
             } else {
                 curl_close($ch);

@@ -129,9 +129,12 @@ class wgetImages
     /**
      * Permet d'attendre son créneau avant d'exécuter l'action suivante
      *
-     * @param   string    $url      url à appeler
+     * @param  string   $url            Url de l'image
+     * @param  string   $saveToDir      Répertoire de destination
+     * @param  string   $imageName      Nouveau nom de l'image (sans l'extension)
+     * @param  boolean  $checkRedir     Permet de vérifier s'il y a une redirection et de récupérer vrai lien
      */
-    public function getCode($url)
+    public function saveImg($url, $saveToDir, $imageName, $checkRedir=true)
     {
         // Boucle sur 5 minutes le temps d'obtenir un créneau
         for ($i=0; $i<50000; $i++) {
@@ -140,7 +143,7 @@ class wgetImages
             usleep(100000);
 
             // Execution tous les 5 secondes
-            $ret = $this->getCodeAux($url);
+            $ret = $this->getCodeAux($url, $saveToDir, $imageName, $checkRedir);
 
             if ($this->wait) {
                 continue;
@@ -157,14 +160,14 @@ class wgetImages
 
 
     /**
-     * Récupération du code du lien appelé
+     * Sauvegarde de l'image
      *
-     * @param  string   $url            Url à appeler
+     * @param  string   $url            Url de l'image
      * @param  string   $saveToDir      Répertoire de destination
      * @param  string   $imageName      Nouveau nom de l'image (sans l'extension)
      * @param  boolean  $checkRedir     Permet de vérifier s'il y a une redirection et de récupérer vrai lien
      */
-    public function getCodeAux($url, $saveToDir, $imageName, $checkRedir=true)
+    public function saveImgAux($url, $saveToDir, $imageName, $checkRedir)
     {
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_HEADER, 1);
@@ -195,7 +198,7 @@ class wgetImages
 
             if ($checkRedir) {
                 if (in_array($cinfos['http_code'], [301,302])) {
-                    $this->getCodeAux(
+                    $this->saveImgAux(
                         $cinfos['redirect_url'],
                         $saveToDir,
                         $imageName,
