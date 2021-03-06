@@ -6,7 +6,7 @@ namespace tools;
  *
  * @author Daniel Gomes
  */
-class images
+class images extends wgetImages
 {
     /**
      * Permet de sauvegarder une image
@@ -15,7 +15,7 @@ class images
      * @param  string   $saveToDir  Répertoire de destination
      * @param  string   $imageName  Nouveau nom de l'image (sans l'extension)
      */
-    public static function saveImage($imagePath, $saveToDir, $imageName = null, $getExtension = false)
+    public function saveImage($imagePath, $saveToDir, $imageName=null, $getExtension=false)
     {
         try {
             if (is_null($imageName)) {
@@ -27,7 +27,7 @@ class images
                 $saveToDir .= '/';
             }
 
-            self::curlSaveImage($imagePath, $saveToDir, $imageName);
+            $this->saveImg($imagePath, $saveToDir, $imageName);
 
             preg_match("'^(.*)\.(gif|jpe?g|png|webp)$'i", $imageName, $ext);
 
@@ -42,8 +42,21 @@ class images
                         case 2 :    $extension = 'jpg';     break;
                         case 3 :    $extension = 'png';     break;
                         case 4 :    $extension = 'bmp';     break;
+                        case 5 :    $extension = 'psd';     break;
+                        case 6 :    $extension = 'bmp';     break;
+                        case 7 :    $extension = 'tiff';    break;
+                        case 8 :    $extension = 'tiff';    break;
+                        case 9 :    $extension = 'jpc';     break;
+                        case 10 :   $extension = 'jp2';     break;
+                        case 11 :   $extension = 'jpx';     break;
+                        case 12 :   $extension = 'jb2';     break;
+                        case 13 :   $extension = 'swc';     break;
+                        case 14 :   $extension = 'aiff';    break;
+                        case 15 :   $extension = 'wbmp';    break;
+                        case 16 :   $extension = 'xbm';     break;
+                        case 17 :   $extension = 'ico';     break;
                         case 18 :   $extension = 'webp';    break;
-                        default :   $extension = 'unknow';
+                        default :   $extension = 'jpg';
                     }
 
                     $nameFile = $saveToDir . $imageName . '.' . $extension;
@@ -74,9 +87,10 @@ class images
      * @param  integer  $max_x          Nouvelle largeur
      * @param  integer  $max_y          Nouvelle hauteur
      */
-    public static function resizeImg($imagePath, $saveToDir, $imageName, $max_x, $max_y)
+    public function resizeImg($imagePath, $saveToDir, $imageName, $max_x, $max_y)
     {
         try {
+
             preg_match("'^(.*)\.(gif|jpe?g|png|webp)$'i", $imagePath, $ext);
             $extension = strtolower($ext[2]);
             if ($extension == 'jpeg') {
@@ -92,6 +106,8 @@ class images
                              break;
                 case 'png' : $im   = imagecreatefrompng  ($imagePath);
                              break;
+                case 'bmp' : $im   = imagecreatefrombmp  ($imagePath);
+                             break;
                 case 'webp': $im   = imagecreatefromwebp ($imagePath);
                              break;
                 default    : $stop = true;
@@ -99,16 +115,28 @@ class images
             }
 
             if (!isset($stop)) {
+
                 $x = imagesx($im);
                 $y = imagesy($im);
 
-                if (($max_x/$max_y) < ($x/$y)) {
-                    $save = imagecreatetruecolor($x/($x/$max_x), $y/($x/$max_x));
-                } else {
-                    $save = imagecreatetruecolor($x/($y/$max_y), $y/($y/$max_y));
+                // Hauteur de destination
+                $dst_h = 0;
+
+                // Traitement spécifique images YouTube (bandeaux noirs haut et bas)
+                if ($x == 640 && $y == 480) {
+                    $y = 360;
+                    $dst_h = 60;
                 }
 
-                imagecopyresized($save, $im, 0, 0, 0, 0, imagesx($save), imagesy($save), $x, $y);
+                // if (($max_x/$max_y) < ($x/$y)) {
+                //     $save = imagecreatetruecolor($x/($x/$max_x), $y/($x/$max_x));
+                // } else {
+                //     $save = imagecreatetruecolor($x/($y/$max_y), $y/($y/$max_y));
+                // }
+
+                $save = imagecreatetruecolor($max_x, $max_y);
+
+                imagecopyresized($save, $im, 0, 0, 0, $dst_h, imagesx($save), imagesy($save), $x, $y);
 
                 // Ajout d'un slash au path s'il est manquant
                 if ($saveToDir[strlen($saveToDir)-1] != '/') {
@@ -147,7 +175,7 @@ class images
      * @param  string   $imageName      Nouveau nom de l'image (sans l'extension)
      * @param  boolean  $checkRedir     Permet de vérifier s'il y a une redirection et de récupérer vrai lien
      */
-    private static function curlSaveImage($imagePath, $saveToDir, $imageName, $checkRedir=true)
+    private function curlSaveImage($imagePath, $saveToDir, $imageName, $checkRedir=true)
     {
         $ch = curl_init($imagePath);
         curl_setopt($ch, CURLOPT_HEADER, 1);
@@ -165,7 +193,7 @@ class images
             if ($checkRedir) {
                 $ret = curl_getinfo($ch);
                 if ($ret['http_code'] == 301 || $ret['http_code'] == 302) {
-                    self::curlSaveImage($ret['redirect_url'], $saveToDir, $imageName, false);
+                    $this->curlSaveImage($ret['redirect_url'], $saveToDir, $imageName, false);
                 }
             } else {
                 curl_close($ch);
