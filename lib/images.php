@@ -164,7 +164,7 @@ class images
 
             if ($checkRedir) {
                 $ret = curl_getinfo($ch);
-                if ($ret['http_code'] == '301' || $ret['http_code'] == 302) {
+                if ($ret['http_code'] == 301 || $ret['http_code'] == 302) {
                     self::curlSaveImage($ret['redirect_url'], $saveToDir, $imageName, false);
                 }
             } else {

@@ -7,7 +7,7 @@ use tools\dbSingleton;
 /**
  * Class for scraping
  */
-class wget
+class wgetImages
 {
     /**
      * Instance PDO
@@ -160,11 +160,15 @@ class wget
      * Récupération du code du lien appelé
      *
      * @param  string   $url            Url à appeler
-     * @return array                    Code de la page et code HTTP de retour
+     * @param  string   $saveToDir      Répertoire de destination
+     * @param  string   $imageName      Nouveau nom de l'image (sans l'extension)
+     * @param  boolean  $checkRedir     Permet de vérifier s'il y a une redirection et de récupérer vrai lien
      */
-    public function getCodeAux($url)
+    public function getCodeAux($url, $saveToDir, $imageName, $checkRedir=true)
     {
         $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_MAXREDIRS, 2);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
         // Rotation des IP (disponibles sur le serveur) et des User Agent
@@ -180,25 +184,41 @@ class wget
         $erroNo = curl_errno($ch);
 
         if (!$erroNo) {
-            $wget = curl_exec($ch);
-            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-            $status = 'success';
-            if ($httpCode != 200) {
-                $status = 'problem';
+            $fp = fopen($saveToDir . $imageName, 'wb');
+
+            curl_setopt($ch, CURLOPT_FILE, $fp);
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+
+            $wget   = curl_exec($ch);
+            $cinfos = curl_getinfo($ch);
+
+            if ($checkRedir) {
+                if (in_array($cinfos['http_code'], [301,302])) {
+                    $this->getCodeAux(
+                        $cinfos['redirect_url'],
+                        $saveToDir,
+                        $imageName,
+                        false
+                    );
+                }
+
+            } else {
+                curl_close($ch);
+                fclose($fp);
+
+                if ($cinfos['http_code'] != 200) {
+                    throw new \Exception('HTTP Code : ' . $cinfos['http_code']);
+                }
+
+                return [
+                    'status'    => 'success',
+                    'http_code' => $cinfos['http_code'],
+                ];
             }
 
-            $ret = [
-                'status'    => 'success',
-                'http_code' => $httpCode,
-                'code'      => $wget
-            ];
-
-            curl_close($ch);
-
-            return $ret;
-
         } else {
+
             throw new \Exception('Curl Errno : ' . $erroNo . ' - ' . $this->curlErrNo($erroNo));
         }
     }
