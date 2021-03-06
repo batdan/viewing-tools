@@ -162,11 +162,7 @@ class wgetImages
             usleep(100000);
 
             // Execution tous les 5 secondes
-<<<<<<< HEAD
             $ret = $this->saveImgAux($saveToDir, $imageName, $checkRedir);
-=======
-            $ret = $this->getCodeAux($url, $saveToDir, $imageName, $checkRedir);
->>>>>>> 1e3a30016c027b9dafb2814fbed22f84f1fa3527
 
             if ($this->wait) {
                 continue;
@@ -185,11 +181,7 @@ class wgetImages
      * @param  string   $imageName      Nouveau nom de l'image (sans l'extension)
      * @param  boolean  $checkRedir     Permet de vérifier s'il y a une redirection et de récupérer vrai lien
      */
-<<<<<<< HEAD
     public function saveImgAux($saveToDir, $imageName, $checkRedir)
-=======
-    public function saveImgAux($url, $saveToDir, $imageName, $checkRedir)
->>>>>>> 1e3a30016c027b9dafb2814fbed22f84f1fa3527
     {
         $ch = curl_init($this->url);
         curl_setopt($ch, CURLOPT_HEADER, 1);
@@ -220,7 +212,6 @@ class wgetImages
 
             if ($checkRedir) {
                 if (in_array($cinfos['http_code'], [301,302])) {
-<<<<<<< HEAD
                     $this->url = $cinfos['redirect_url'];
                     return;
                 }
@@ -229,14 +220,6 @@ class wgetImages
                 if ($cinfos['http_code'] == 404 && strstr($this->url, 'maxresdefault')) {
                     $this->url = str_replace('maxresdefault', 'sddefault', $this->url);
                     return;
-=======
-                    $this->saveImgAux(
-                        $cinfos['redirect_url'],
-                        $saveToDir,
-                        $imageName,
-                        false
-                    );
->>>>>>> 1e3a30016c027b9dafb2814fbed22f84f1fa3527
                 }
 
             } else {
