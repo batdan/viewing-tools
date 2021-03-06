@@ -4,6 +4,9 @@ namespace tools;
 use tools\config;
 use tools\dbSingleton;
 
+/**
+ * Class for scraping
+ */
 class wget
 {
     /**
