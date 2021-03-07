@@ -164,41 +164,4 @@ class images extends wgetImages
             echo json_encode($msg);
         }
     }
-
-
-    /**
-     * Enregistrement de l'image
-     * Cette fonction récupère la bonne url s'il y a une redirection 301, 302
-     *
-     * @param  string   $imagePath      Chemin de l'image à redimensionner
-     * @param  string   $saveToDir      Répertoire de destination
-     * @param  string   $imageName      Nouveau nom de l'image (sans l'extension)
-     * @param  boolean  $checkRedir     Permet de vérifier s'il y a une redirection et de récupérer vrai lien
-     */
-    private function curlSaveImage($imagePath, $saveToDir, $imageName, $checkRedir=true)
-    {
-        $ch = curl_init($imagePath);
-        curl_setopt($ch, CURLOPT_HEADER, 1);
-        curl_setopt($ch, CURLOPT_MAXREDIRS, 2);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-        if (!curl_errno($ch))
-        {
-            $fp = fopen($saveToDir . $imageName, 'wb');
-
-            curl_setopt($ch, CURLOPT_FILE, $fp);
-            curl_setopt($ch, CURLOPT_HEADER, 0);
-            curl_exec($ch);
-
-            if ($checkRedir) {
-                $ret = curl_getinfo($ch);
-                if ($ret['http_code'] == 301 || $ret['http_code'] == 302) {
-                    $this->curlSaveImage($ret['redirect_url'], $saveToDir, $imageName, false);
-                }
-            } else {
-                curl_close($ch);
-                fclose($fp);
-            }
-        }
-    }
 }
