@@ -19,13 +19,13 @@ class wgetImages
      * Get Ip & User Agent
      * @var array
      */
-    private $rotateIp;
+    protected $rotateIp;
 
     /**
      * Nom server
      * @var string
      */
-    private $srvName;
+    protected $srvName;
 
     /**
      * IP disponibles

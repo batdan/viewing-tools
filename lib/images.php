@@ -62,18 +62,22 @@ class images extends wgetImages
                     $nameFile = $saveToDir . $imageName . '.' . $extension;
                     rename($saveToDir . $imageName, $nameFile);
 
-                    return $nameFile;
+                    return [
+                        'img' => $nameFile,
+                        'srv' => $this->srvName,
+                        'ip'  => $this->rotateIp['ip'],
+                    ];
                 }
             }
 
-            return $imageName . $ext[2];
+            return [
+                'img' => $imageName . $ext[2],
+                'srv' => $this->srvName,
+                'ip'  => $this->rotateIp['ip'],
+            ];
 
         } catch (\Exception $e) {
-            $msg = [
-                'status'    => 'problem',
-                'mesage'    => $e->getMessage(),
-            ];
-            echo json_encode($msg);
+            throw new \Exception($e->getMessage());
         }
     }
 
@@ -157,11 +161,7 @@ class images extends wgetImages
             }
 
         } catch (\Exception $e) {
-            $msg = [
-                'status'    => 'problem',
-                'mesage'    => $e->getMessage(),
-            ];
-            echo json_encode($msg);
+            throw new \Exception($e->getMessage());
         }
     }
 }
