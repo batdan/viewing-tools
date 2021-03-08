@@ -169,7 +169,11 @@ class wgetImages
             }
         }
 
-        throw new \Exception("Error Processing Request Wget : " . $url, 1);
+        $msg = [
+            'status'    => 'problem',
+            'message'   => 'Error Processing Request Wget : ' . $url
+        ];
+        echo json_encode($msg) . chr(10);
     }
 
 
@@ -228,14 +232,21 @@ class wgetImages
             }
 
             if ($cinfos['http_code'] != 200) {
-                throw new \Exception('HTTP Code : ' . $cinfos['http_code']);
+                $msg = [
+                    'status'    => 'problem',
+                    'message'   => 'HTTP Code : ' . $cinfos['http_code'] . ' | url : ' . $this->url
+                ];
+                echo json_encode($msg) . chr(10);
             }
 
             $this->status = 'success';
 
         } else {
-
-            throw new \Exception('Curl Errno : ' . $erroNo . ' - ' . $this->curlErrNo($erroNo));
+            $msg = [
+                'status'    => 'problem',
+                'message'   => 'Curl Errno : ' . $erroNo . ' - ' . $this->curlErrNo($erroNo)
+            ];
+            echo json_encode($msg) . chr(10);
         }
     }
 
