@@ -77,7 +77,11 @@ class images extends wgetImages
             ];
 
         } catch (\Exception $e) {
-            throw new \Exception($e->getMessage());
+            $msg = [
+                'status'    => 'problem',
+                'message'   => $e->getMessage()
+            ];
+            echo json_encode($msg) . chr(10);
         }
     }
 
@@ -161,7 +165,11 @@ class images extends wgetImages
             }
 
         } catch (\Exception $e) {
-            throw new \Exception($e->getMessage());
+            $msg = [
+                'status'    => 'problem',
+                'message'   => $e->getMessage()
+            ];
+            echo json_encode($msg) . chr(10);
         }
     }
 }

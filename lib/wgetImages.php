@@ -151,7 +151,7 @@ class wgetImages
         $this->url = $url;
 
         // Boucle sur 5 minutes le temps d'obtenir un créneau
-        for ($i=0; $i<50000; $i++) {
+        for ($i=0; $i<36000; $i++) {
 
             if ($this->status == 'success') {
                 $this->status = null;
@@ -171,7 +171,7 @@ class wgetImages
 
         $msg = [
             'status'    => 'problem',
-            'message'   => 'Error Processing Request Wget : ' . $url
+            'message'   => '1 heure sans réponse'
         ];
         echo json_encode($msg) . chr(10);
     }
@@ -234,6 +234,7 @@ class wgetImages
             if ($cinfos['http_code'] != 200) {
                 $msg = [
                     'status'    => 'problem',
+                    'ip'        => $this->rotateIp['ip'],
                     'message'   => 'HTTP Code : ' . $cinfos['http_code'] . ' | url : ' . $this->url
                 ];
                 echo json_encode($msg) . chr(10);
