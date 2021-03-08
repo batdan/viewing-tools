@@ -190,6 +190,9 @@ class wget
 
             $ret = [
                 'status'    => 'success',
+                'src'       => $this->platform,
+                'srv'       => $this->srvName,
+                'ip'        => $this->rotateIp['ip'],
                 'http_code' => $httpCode,
                 'code'      => $wget
             ];
