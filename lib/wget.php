@@ -131,7 +131,7 @@ class wget
      *
      * @param   string    $url      url à appeler
      */
-    public function getCode($url)
+    public function getCode($url, $addOptions=[])
     {
         // Boucle sur 5 minutes le temps d'obtenir un créneau
         for ($i=0; $i<50000; $i++) {
@@ -140,7 +140,7 @@ class wget
             usleep(100000);
 
             // Execution tous les 5 secondes
-            $ret = $this->getCodeAux($url);
+            $ret = $this->getCodeAux($url, $addOptions);
 
             if ($this->wait) {
                 continue;
@@ -160,9 +160,11 @@ class wget
      * Récupération du code du lien appelé
      *
      * @param  string   $url            Url à appeler
+     * @param  array    $addOptions     Permet d'ajouter des options Curl
+     *
      * @return array                    Code de la page et code HTTP de retour
      */
-    public function getCodeAux($url)
+    public function getCodeAux($url, $addOptions)
     {
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -176,6 +178,12 @@ class wget
 
         curl_setopt($ch, CURLOPT_INTERFACE, $this->rotateIp['ip']);
         curl_setopt($ch, CURLOPT_USERAGENT, $this->rotateIp['userAgent']);
+
+        if (count($addOptions)) {
+            foreach ($addOptions as $k => $v) {
+                curl_setopt($ch, $k, $v);
+            }
+        }
 
         $erroNo = curl_errno($ch);
 
