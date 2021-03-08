@@ -170,6 +170,7 @@ class wgetImages
         }
 
         $msg = [
+            'h'         => date('Y-m-d H:i:s'),
             'status'    => 'problem',
             'message'   => '1 heure sans réponse'
         ];
@@ -233,6 +234,7 @@ class wgetImages
 
             if ($cinfos['http_code'] != 200) {
                 $msg = [
+                    'h'         => date('Y-m-d H:i:s'),
                     'status'    => 'problem',
                     'ip'        => $this->rotateIp['ip'],
                     'message'   => 'HTTP Code : ' . $cinfos['http_code'] . ' | url : ' . $this->url
@@ -244,6 +246,7 @@ class wgetImages
 
         } else {
             $msg = [
+                'h'         => date('Y-m-d H:i:s'),
                 'status'    => 'problem',
                 'message'   => 'Curl Errno : ' . $erroNo . ' - ' . $this->curlErrNo($erroNo)
             ];

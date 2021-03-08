@@ -78,6 +78,7 @@ class images extends wgetImages
 
         } catch (\Exception $e) {
             $msg = [
+                'h'         => date('Y-m-d H:i:s'),
                 'status'    => 'problem',
                 'message'   => $e->getMessage()
             ];
@@ -166,6 +167,7 @@ class images extends wgetImages
 
         } catch (\Exception $e) {
             $msg = [
+                'h'         => date('Y-m-d H:i:s'),
                 'status'    => 'problem',
                 'message'   => $e->getMessage()
             ];
