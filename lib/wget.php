@@ -134,7 +134,7 @@ class wget
     public function getCode($url, $addOptions=[])
     {
         // Boucle sur 5 minutes le temps d'obtenir un créneau
-        for ($i=0; $i<50000; $i++) {
+        for ($i=0; $i<36000; $i++) {
 
             // Attente 0.1 seconde de seconde
             usleep(100000);
@@ -152,7 +152,12 @@ class wget
             }
         }
 
-        throw new \Exception("Error Processing Request Wget : " . $url, 1);
+        $msg = [
+            'h'         => date('Y-m-d H:i:s'),
+            'status'    => 'problem',
+            'message'   => '1 heure sans réponse'
+        ];
+        echo json_encode($msg) . chr(10);
     }
 
 
@@ -210,7 +215,12 @@ class wget
             return $ret;
 
         } else {
-            throw new \Exception('Curl Errno : ' . $erroNo . ' - ' . $this->curlErrNo($erroNo));
+            $msg = [
+                'h'         => date('Y-m-d H:i:s'),
+                'status'    => 'problem',
+                'message'   => 'Curl Errno : ' . $erroNo . ' - ' . $this->curlErrNo($erroNo)
+            ];
+            echo json_encode($msg) . chr(10);
         }
     }
 
