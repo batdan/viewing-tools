@@ -409,7 +409,7 @@ class wget
                       FROM      analyse_actions
                       WHERE     DATE_FORMAT(date_crea, '%Y-%m-%d %H-%i') = DATE_FORMAT(NOW(), '%Y-%m-%d %H-%i')
                       AND       plage = :plage
-                      AND     ip = :ip
+                      AND       ip = :ip
                       LIMIT     1";
 
         $sqlMinute = $this->dbh->prepare($reqMinute);
