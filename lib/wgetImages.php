@@ -121,9 +121,6 @@ class wgetImages
         $this->rotateIps    = $rotateIps;
         $this->analyseQty   = $analyseQty;
 
-        // Instance PDO
-        $this->dbh = dbSingleton::getInstance('cron');
-
         // Récupération des configurations
         $this->srvName        = config::getConfig('srvName');
         $this->ipList         = config::getConfig('ipServer');
@@ -132,9 +129,6 @@ class wgetImages
         // Dernière clé du tableau de la liste des IPs
         $getKeys = array_keys($this->ipList);
         $this->endKeysIpLists = end($getKeys);
-
-        // Préparation des requêtes
-        $this->prepareReq();
     }
 
 
@@ -148,6 +142,12 @@ class wgetImages
      */
     public function saveImg($url, $saveToDir, $imageName, $checkRedir=true)
     {
+        // Instance PDO
+        $this->dbh = dbSingleton::getInstance('cron');
+
+        // Préparation des requêtes
+        $this->prepareReq();
+
         $this->url = $url;
 
         // Boucle sur 5 minutes le temps d'obtenir un créneau
