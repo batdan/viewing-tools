@@ -155,7 +155,7 @@ class wgetImages
 
             if ($this->status == 'success') {
                 $this->status = null;
-                return;
+                return true;
             }
 
             // Attente 0.1 seconde de seconde
@@ -175,6 +175,8 @@ class wgetImages
             'message'   => '1 heure sans réponse'
         ];
         echo json_encode($msg) . chr(10);
+
+        return false;
     }
 
 
@@ -218,6 +220,17 @@ class wgetImages
             if ($checkRedir) {
                 if (in_array($cinfos['http_code'], [301,302])) {
                     $this->url = $cinfos['redirect_url'];
+
+                    $msg = [
+                        'h'     => date('Y-m-d H:i:s'),
+                        'status'=> 'redir',
+                        'src'   => $this->platform,
+                        'srv'   => $this->srvName,
+                        'ip'    => $this->rotateIp['ip'],
+                        'msg'   => 'http_code : ' . $cinfos['http_code']
+                    ];
+                    echo json_encode($msg) . chr(10);
+
                     return;
                 }
 
@@ -240,6 +253,8 @@ class wgetImages
                     'message'   => 'HTTP Code : ' . $cinfos['http_code'] . ' | url : ' . $this->url
                 ];
                 echo json_encode($msg) . chr(10);
+
+                return;
             }
 
             $this->status = 'success';

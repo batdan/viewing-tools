@@ -27,7 +27,11 @@ class images extends wgetImages
                 $saveToDir .= '/';
             }
 
-            $this->saveImg($imagePath, $saveToDir, $imageName);
+            $ret = $this->saveImg($imagePath, $saveToDir, $imageName);
+
+            if ($ret === false) {
+                return false;
+            }
 
             preg_match("'^(.*)\.(gif|jpe?g|png|webp)$'i", $imageName, $ext);
 
