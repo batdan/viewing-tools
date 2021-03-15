@@ -172,7 +172,8 @@ class wgetImages
         $msg = [
             'h'         => date('Y-m-d H:i:s'),
             'status'    => 'problem',
-            'message'   => '1 heure sans réponse'
+            'method'    => '\tools\wgetImages::saveImg',
+            'msg'       => '1 heure sans réponse'
         ];
         echo json_encode($msg) . chr(10);
 
@@ -250,7 +251,8 @@ class wgetImages
                     'h'         => date('Y-m-d H:i:s'),
                     'status'    => 'problem',
                     'ip'        => $this->rotateIp['ip'],
-                    'message'   => 'HTTP Code : ' . $cinfos['http_code'] . ' | url : ' . $this->url
+                    'method'    => '\tools\wgetImages::saveImgAux',
+                    'msg'       => 'HTTP Code : ' . $cinfos['http_code'] . ' | url : ' . $this->url
                 ];
                 echo json_encode($msg) . chr(10);
 
@@ -263,7 +265,8 @@ class wgetImages
             $msg = [
                 'h'         => date('Y-m-d H:i:s'),
                 'status'    => 'problem',
-                'message'   => 'Curl Errno : ' . $erroNo . ' - ' . $this->curlErrNo($erroNo)
+                'method'    => '\tools\wgetImages::saveImgAux',
+                'msg'       => 'Curl Errno : ' . $erroNo . ' - ' . $this->curlErrNo($erroNo)
             ];
             echo json_encode($msg) . chr(10);
         }

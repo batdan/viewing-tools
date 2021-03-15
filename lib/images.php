@@ -84,7 +84,8 @@ class images extends wgetImages
             $msg = [
                 'h'         => date('Y-m-d H:i:s'),
                 'status'    => 'problem',
-                'message'   => $e->getMessage()
+                'method'    => '\tools\images::saveImage',
+                'msg'       => $e->getMessage()
             ];
             echo json_encode($msg) . chr(10);
         }
@@ -173,7 +174,8 @@ class images extends wgetImages
             $msg = [
                 'h'         => date('Y-m-d H:i:s'),
                 'status'    => 'problem',
-                'message'   => $e->getMessage()
+                'method'    => '\tools\images::resizeImg',
+                'msg'       => $e->getMessage()
             ];
             echo json_encode($msg) . chr(10);
         }
