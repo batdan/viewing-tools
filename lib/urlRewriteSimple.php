@@ -31,7 +31,7 @@ class urlRewriteSimple
 	public function __construct($http_host='', $request_uri='')
 	{
 		// Instance PDO
-		$this->_dbh = \tools\dbSingleton::getInstance();
+		$this->_dbh = dbSingleton::getInstance();
 
 		if ($http_host == '') {
 			$this->_http_host	= $_SERVER['HTTP_HOST'];
