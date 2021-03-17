@@ -155,6 +155,9 @@ class wgetImages
 
             if ($this->status == 'success') {
                 $this->status = null;
+
+                dbSingleton::closeInstance('cron');
+
                 return true;
             }
 
@@ -176,6 +179,8 @@ class wgetImages
             'msg'       => '1 heure sans réponse'
         ];
         echo json_encode($msg) . chr(10);
+
+        dbSingleton::closeInstance('cron');
 
         return false;
     }
