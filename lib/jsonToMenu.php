@@ -102,11 +102,11 @@ class jsonToMenu
 		$section = $this->_crypt->encrypt($section);
 
 		$this->_json['section'][$section] = array(
-												'table'			=> $this->_crypt->encrypt($table),
-												'chp'			=> $this->_crypt->encrypt($chp),
-												'chp_order'		=> $this->_crypt->encrypt($chp_order),
-												'order'			=> $this->_crypt->encrypt($order),
-					 							);
+			'table'		=> $this->_crypt->encrypt($table),
+			'chp'		=> $this->_crypt->encrypt($chp),
+			'chp_order'	=> $this->_crypt->encrypt($chp_order),
+			'order'		=> $this->_crypt->encrypt($order),
+		);
 	}
 
 
@@ -120,7 +120,7 @@ class jsonToMenu
 		$cacheFile = "M#" . $this->_id_project . "#" . $this->_rang . "#" . date("Ymd");
 
 		// Récupération du dossier de cache
-		if ($this->_cache===true) {
+		if ($this->_cache) {
 			$cache = config::getConfig('cacheJson');
 		}
 

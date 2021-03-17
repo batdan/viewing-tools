@@ -38,6 +38,7 @@ class ComposerStaticInit306575409b3a3c0f02b2a96d973a3328
         'tools\\tools' => __DIR__ . '/../..' . '/lib/tools.php',
         'tools\\urlRewrite' => __DIR__ . '/../..' . '/lib/urlRewrite.php',
         'tools\\urlRewriteCrypt' => __DIR__ . '/../..' . '/lib/urlRewriteCrypt.php',
+        'tools\\urlRewriteCrypt2' => __DIR__ . '/../..' . '/lib/urlRewriteCrypt2.php',
         'tools\\urlRewriteSimple' => __DIR__ . '/../..' . '/lib/urlRewriteSimple.php',
         'tools\\wget' => __DIR__ . '/../..' . '/lib/wget.php',
         'tools\\wgetImages' => __DIR__ . '/../..' . '/lib/wgetImages.php',

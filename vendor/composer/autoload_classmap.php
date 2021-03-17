@@ -37,6 +37,7 @@ return array(
     'tools\\tools' => $baseDir . '/lib/tools.php',
     'tools\\urlRewrite' => $baseDir . '/lib/urlRewrite.php',
     'tools\\urlRewriteCrypt' => $baseDir . '/lib/urlRewriteCrypt.php',
+    'tools\\urlRewriteCrypt2' => $baseDir . '/lib/urlRewriteCrypt2.php',
     'tools\\urlRewriteSimple' => $baseDir . '/lib/urlRewriteSimple.php',
     'tools\\wget' => $baseDir . '/lib/wget.php',
     'tools\\wgetImages' => $baseDir . '/lib/wgetImages.php',
